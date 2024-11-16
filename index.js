@@ -80,8 +80,10 @@ function getComputerChoice() {
 function getHumanChoice() {
   let choice;
     //Get prompt from player and save in variable
-    let playerChoice = prompt("Rock, Paper or Scissors?").toUpperCase(); //expecting string
+    // let playerChoice = prompt("Rock, Paper or Scissors?").toUpperCase(); //expecting string
     
+    //get prompt from button clicked
+    $button("click").
 
     
     //logic for somehow compare string and convert it to 1/2/3
@@ -119,23 +121,23 @@ function determineWinner(human, computer) {
     }
 }
 
-for (let i = 0; i < 5; i++) {
-    // Play the game and capture the result
-    const gameState = startGame();
+    for (let i = 0; i < 5; i++) {
+        // Play the game and capture the result
+        const gameState = startGame();
 
-    if (gameState.computerScore === 3) {
+        if (gameState.computerScore === 3) {
         alert("Computer Wins!")
         break;
         
-    } else if (gameState.humanScore === 3) {
+        } else if (gameState.humanScore === 3) {
         alert("Human Wins")
         break;
-    }
+        }
 
-    // Check if it was a draw
-    if (gameState.lastResult === "draw") {
+        // Check if it was a draw
+        if (gameState.lastResult === "draw") {
         i--; // Decrement i to replay the round
-    }
+        }
 }
 
 
