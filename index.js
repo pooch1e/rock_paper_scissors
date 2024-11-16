@@ -1,50 +1,84 @@
 //const scores
-const humanScore = 0;
-const computerScore = 0;
-
+let humanScore = 0;
+let computerScore = 0;
+let round = 0;
 //function to start game
 function startGame() {
+    alert("Start the game: ")
+    const humanChoice = getHumanChoice();
+    const computerChoice = getComputerChoice();
+    const result = determineWinner(humanChoice, computerChoice);
+
+    if (result === "human") {
+        alert("You won this round");
+        humanScore++;
+    } else if (result === "computer") {
+        alert("Computer won");
+        computerScore++;
+    } else {
+        alert("It is a draw")
+    }
+    round++;
+    alert(`The score is: Human - ${humanScore}, Computer - ${computerScore}`);
+
+        // Return the game state
+        return {
+            humanScore,
+            computerScore,
+            round,
+            lastResult: result,
+        };
+    };
+    
 
 
-}
 
 //function to randomly call rock, paper or scissors
+//returns 1, 2, or 3
+//1 = rock
+//2 = paper
+//3 = scissors
 
-function getComputerChoice() {
-    //initialise variables
-    let rock;
-    let paper;
-    let scissors;
+function getComputerChoice() { 
+    // //initialise variables
+    // let rock;
+    // let paper;
+    // let scissors;
 
+    let randoNumber = Math.floor(Math.random() * 3) + 1; //get number between 1 and 3
+    return randoNumber;
 
-    function randomNum() { //function to generate random number
-        let randoNumber = Math.floor(Math.random() * 3) + 1; //get number between 1 and 3
-        return randoNumber;
-    }
-    let myNum = randomNum(); //create that number
+    // function randomNum() { //function to generate random number
+  
+    // }
+    // let myNum = randomNum(); //create that number
     // console.log(randomNum());
     //print rock paper or scissors depending on what the random number was
-    if (myNum === 1) {
-        return rock = "Rock";
-        // console.log(rock);
-    } else if (myNum === 2) {
-       return paper = "Paper";
-        // console.log(paper);
-    } else if (myNum === 3) {
-        return scissors = "Scissors";
-        // console.log(scissors);
-    } else {
-        console.log(null);
-    }
+//     if (myNum === 1) {
+//         console.log("Rock");
+//         return myNum;
+        
+//     } else if (myNum === 2) {
+//        console.log("Paper");
+//        return myNum;
+       
+//     } else if (myNum === 3) {
+//         console.log("Scissors");
+//         return myNum;
+     
+//     } else {
+//         console.log(null);
+//     }
    
-}
+// }
+};
+
+
 
 //human player input choice
+//returns 1 2 or 3
 function getHumanChoice() {
-    //initialise variables
-    let rock;
-    let paper;
-    let scissors;
+  let choice;
     //Get prompt from player and save in variable
     let playerChoice = prompt("Rock, Paper or Scissors?").toUpperCase(); //expecting string
     
@@ -52,30 +86,57 @@ function getHumanChoice() {
     
     //logic for somehow compare string and convert it to 1/2/3
     if (playerChoice === "ROCK") {
-        rock = 1;
-        return rock;
+        choice = 1;
+    
     } else if (playerChoice === "PAPER") {
-        paper = 2;
-        return paper;
+        choice = 2;
+        
     } else if (playerChoice === "SCISSORS") {
-        scissors = 3;
-        return scissors;
+        choice = 3;
+        
     } else {
         return null;
     }
 
-    
+    return choice;    
 }
 
-//compare human vs computer
-function nextSequence() {
 
+function determineWinner(human, computer) {
+    if (human === computer) {
+        return "draw";
+    }
 
-
-//game logic
-getComputerChoice();
-getHumanChoice();
-//logic to determine who won
-
-
+    // Rock beats Scissors, Scissors beat Paper, Paper beats Rock
+    if (
+        (human === 1 && computer === 3) || // Rock beats Scissors
+        (human === 2 && computer === 1) || // Paper beats Rock
+        (human === 3 && computer === 2)    // Scissors beat Paper
+    ) {
+        return "human";
+    } else {
+        return "computer";
+    }
 }
+
+for (let i = 0; i < 5; i++) {
+    // Play the game and capture the result
+    const gameState = startGame();
+
+    if (gameState.computerScore === 3) {
+        alert("Computer Wins!")
+        break;
+        
+    } else if (gameState.humanScore === 3) {
+        alert("Human Wins")
+        break;
+    }
+
+    // Check if it was a draw
+    if (gameState.lastResult === "draw") {
+        i--; // Decrement i to replay the round
+    }
+}
+
+
+
