@@ -4,7 +4,7 @@ let computerScore = 0;
 let round = 0;
 //function to start game
 function startGame() {
-    alert("Start the game: ")
+    // alert("Start the game: ")
     const humanChoice = getHumanChoice();
     const computerChoice = getComputerChoice();
     const result = determineWinner(humanChoice, computerChoice);
@@ -32,12 +32,6 @@ function startGame() {
     
 
 
-
-//function to randomly call rock, paper or scissors
-//returns 1, 2, or 3
-//1 = rock
-//2 = paper
-//3 = scissors
 
 function getComputerChoice() { 
     // //initialise variables
@@ -73,6 +67,11 @@ function getComputerChoice() {
 // }
 };
 
+function startButton() {
+    $(".start").on(click,  () => {
+        //unhide the other buttons
+    })
+}
 
 
 //human player input choice
