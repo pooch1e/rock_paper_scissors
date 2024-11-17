@@ -68,11 +68,19 @@ function getComputerChoice() {
 };
 
 function startButton() {
-    $(".start").on(click,  () => {
-        //unhide the other buttons
-    })
-}
+    $(".start").on("click",  () => {
+        //unhide the other buttons on r,p,s
+        $(".container").removeClass("hide");
 
+        
+        
+    });
+    //hide button on start
+    $(".start").on("click",  () => {
+        $(".start").addClass("hide")
+        });
+}
+startButton();
 
 //human player input choice
 //returns 1 2 or 3
