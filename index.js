@@ -79,15 +79,16 @@ function getComputerChoice() {
 //returns 1 2 or 3
 function getHumanChoice() {
   let choice;
+  let playerChoice;
     //Get prompt from player and save in variable
     // let playerChoice = prompt("Rock, Paper or Scissors?").toUpperCase(); //expecting string
     
     //get prompt from button clicked
-    $button("click").
-
-    
-    //logic for somehow compare string and convert it to 1/2/3
-    if (playerChoice === "ROCK") {
+    $(".button").on("click", (e) => {
+        playerChoice = e;
+        console.log(e);
+        //logic for somehow compare string and convert it to 1/2/3
+    if (playerChoice === e.button.rock) { //wait this isn't working because player choice is not made yet
         choice = 1;
     
     } else if (playerChoice === "PAPER") {
@@ -101,7 +102,11 @@ function getHumanChoice() {
     }
 
     return choice;    
+
+    });
+
 }
+    
 
 
 function determineWinner(human, computer) {
