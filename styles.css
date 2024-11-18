@@ -1,3 +1,51 @@
+* {
+    font-family: Helvetica;
+ }
+body {
+    box-sizing: border-box;
+}
+
+/* Hide classes */
 .hide {
 display: none;
+}
+
+/* box sizing */
+.container {
+    display: flexbox;
+    text-align: center;
+    justify-content: space-between
+    
+
+}
+/* Button Class */
+.button {
+    padding: 10px;
+}
+
+/* Button object */
+button {
+    height: 4rem;
+    width: 50%;
+    background-color: lightblue;
+    border-radius: 10%
+    
+}
+
+/* H1 sizing */
+h1 {
+    justify-content: center;
+    text-align: center;
+    font-size: 2rem;
+    
+}
+
+.score {
+    display: flexbox;
+    text-align: center;
+    justify-content: space-between
+
+}
+p {
+padding: 2px;
 }

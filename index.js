@@ -1,150 +1,133 @@
-//const scores
-let humanScore = 0;
-let computerScore = 0;
-let round = 0;
-//function to start game
-function startGame() {
-    // alert("Start the game: ")
-    const humanChoice = getHumanChoice();
-    const computerChoice = getComputerChoice();
-    const result = determineWinner(humanChoice, computerChoice);
+$(document).ready(() => {
+    // Initialize scores and round
+    let humanScore = 0;
+    let computerScore = 0;
+    let round = 0;
 
-    if (result === "human") {
-        alert("You won this round");
-        humanScore++;
-    } else if (result === "computer") {
-        alert("Computer won");
-        computerScore++;
-    } else {
-        alert("It is a draw")
-    }
-    round++;
-    alert(`The score is: Human - ${humanScore}, Computer - ${computerScore}`);
-
-        // Return the game state
-        return {
-            humanScore,
-            computerScore,
-            round,
-            lastResult: result,
-        };
-    };
-    
-
-
-
-function getComputerChoice() { 
-    // //initialise variables
-    // let rock;
-    // let paper;
-    // let scissors;
-
-    let randoNumber = Math.floor(Math.random() * 3) + 1; //get number between 1 and 3
-    return randoNumber;
-
-    // function randomNum() { //function to generate random number
-  
-    // }
-    // let myNum = randomNum(); //create that number
-    // console.log(randomNum());
-    //print rock paper or scissors depending on what the random number was
-//     if (myNum === 1) {
-//         console.log("Rock");
-//         return myNum;
-        
-//     } else if (myNum === 2) {
-//        console.log("Paper");
-//        return myNum;
-       
-//     } else if (myNum === 3) {
-//         console.log("Scissors");
-//         return myNum;
-     
-//     } else {
-//         console.log(null);
-//     }
-   
-// }
-};
-
-function startButton() {
-    $(".start").on("click",  () => {
-        //unhide the other buttons on r,p,s
-        $(".container").removeClass("hide");
-
-        
-        
-    });
-    //hide button on start
-    $(".start").on("click",  () => {
-        $(".start").addClass("hide")
+    // Start Button: Reveals game and starts the first round
+    function startButton() {
+        $(".start").off("click").on("click", () => {
+            $(".container").removeClass("hide"); // Show game buttons
+            $(".start").addClass("hide");       // Hide start button
+            $(".score").removeClass("hide");    //reveal score button
+            playGame();                         // Start game
         });
-}
-startButton();
+    }
 
-//human player input choice
-//returns 1 2 or 3
-function getHumanChoice() {
-    //Get prompt from player and save in variable
-    // let playerChoice = prompt("Rock, Paper or Scissors?").toUpperCase(); //expecting string
-    
-    //get prompt from button clicked
-        $(".button").on("click", (e) => {
-            const playerChoice = $(e.target).text().toUpperCase();
-            let choice;
-    
-            if (playerChoice === "ROCK") {
-                choice = 1;
-                // console.log(choice); //check the output
-            } else if (playerChoice === "PAPER") {
-                choice = 2;
-                console.log(choice);
-            } else if (playerChoice === "SCISSORS") {
-                choice = 3;
+    // Play Game Logic
+    function playGame() {
+        if (humanScore < 3 && computerScore < 3 && round < 5) {
+            // Wait for a single round to complete
+            startGame((gameState) => {
+                // Check for overall game winner
+                if (gameState.humanScore === 3) {
+                    alert("Congratulations! You win the game!");
+                    resetGame(); // Reset game after win
+                    return;
+                } else if (gameState.computerScore === 3) {
+                    alert("Computer wins the game! Better luck next time.");
+                    resetGame(); // Reset game after loss
+                    return;
+                }
+
+                // Replay round if it's a draw
+                if (gameState.lastResult === "draw") {
+                    round--; // Decrement round count for a replay
+                }
+
+                // Continue to the next round
+                playGame();
+            });
+        }
+    }
+
+    // Single Round Logic
+    function startGame(callback) {
+        getHumanChoice((humanChoice) => {
+            const computerChoice = getComputerChoice();
+            const result = determineWinner(humanChoice, computerChoice);
+
+            // Update scores and alert round result
+            if (result === "human") {
+                humanScore++;
+                // alert("You won this round!");
+                $("#human-score-card").html(`Human Score: ${humanScore}`);
+
+            } else if (result === "computer") {
+                computerScore++;
+                // alert("Computer won this round!");
+                $("#computer-score-card").html(`Computer Score: ${computerScore}`);
             } else {
-                choice = null;
+                alert("It's a draw!");
             }
-        
 
+            round++;
+            $("#round-card").html(`Round: ${round}`);
+            $("#grandScore").html(`Score is: HUMAN ${humanScore}, COMPUTER ${computerScore}`);
+            // alert(`Current Score:\nHuman: ${humanScore}\nComputer: ${computerScore}`);
+
+            // Return the game state
+            callback({
+                humanScore,
+                computerScore,
+                round,
+                lastResult: result,
+            });
         });
-};
-
-
-function determineWinner(human, computer) {
-    if (human === computer) {
-        return "draw";
     }
 
-    // Rock beats Scissors, Scissors beat Paper, Paper beats Rock
-    if (
-        (human === 1 && computer === 3) || // Rock beats Scissors
-        (human === 2 && computer === 1) || // Paper beats Rock
-        (human === 3 && computer === 2)    // Scissors beat Paper
-    ) {
-        return "human";
-    } else {
-        return "computer";
+    // Human Choice Handler
+    // Human Choice Handler
+function getHumanChoice(callback) {
+    // Remove any existing event listeners to prevent duplication
+    $(".button").off("click").on("click", (e) => {
+        const playerChoice = $(e.target).text().toUpperCase();
+        let choice;
+
+        if (playerChoice === "ROCK") {
+            choice = 1;
+        } else if (playerChoice === "PAPER") {
+            choice = 2;
+        } else if (playerChoice === "SCISSORS") {
+            choice = 3;
+        } else {
+            alert("Invalid choice! Please pick Rock, Paper, or Scissors.");
+            return;
+        }
+
+        callback(choice); // Pass the choice to the callback
+    });
+}
+
+    // Generate Computer Choice
+    function getComputerChoice() {
+        return Math.floor(Math.random() * 3) + 1; // Random choice (1 = Rock, 2 = Paper, 3 = Scissors)
     }
-}
 
-    for (let i = 0; i < 5; i++) {
-        // Play the game and capture the result
-        const gameState = startGame();
+    // Determine Winner for a Round
+    function determineWinner(human, computer) {
+        if (human === computer) return "draw"; // Draw case
 
-        if (gameState.computerScore === 3) {
-        alert("Computer Wins!")
-        break;
-        
-        } else if (gameState.humanScore === 3) {
-        alert("Human Wins")
-        break;
+        if (
+            (human === 1 && computer === 3) || // Rock beats Scissors
+            (human === 2 && computer === 1) || // Paper beats Rock
+            (human === 3 && computer === 2)    // Scissors beat Paper
+        ) {
+            return "human";
         }
+        return "computer"; // All other cases
+    }
 
-        // Check if it was a draw
-        if (gameState.lastResult === "draw") {
-        i--; // Decrement i to replay the round
-        }
-}
+    // Reset Game State
+    function resetGame() {
+        humanScore = 0;
+        computerScore = 0;
+        round = 0;
 
+        $(".container").addClass("hide"); // Hide game buttons
+        $(".start").removeClass("hide"); // Show start button
+    }
 
-
+    // Initialize the Start Button
+    startButton();
+});
